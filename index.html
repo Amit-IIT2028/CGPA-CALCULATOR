@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CGPA Calculator - BIT SINDRI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('1000063709.avif');
+      background-size: cover;
+      background-position: center;
+      filter: blur(14px);
+      z-index: -2;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+    .logo img {
+      height: 100px;
+      background: transparent;
+    }
+    .container {
+      text-align: center;
+      padding: 40px 20px;
+      color: white;
+      position: relative;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-top: 60px;
+      letter-spacing: 1px;
+    }
+    h2 {
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      font-weight: normal;
+    }
+    table {
+      margin: 0 auto;
+      width: 70%;
+      border-collapse: collapse;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      color: white;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid #aaa;
+      color: white;
+      text-align: center;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 1em;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      color: #ccc;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+  <!-- Platinum Jubilee Logo -->
+  <div class="logo">
+    <img src="seventyfive.png" alt="75 Years BIT Sindri Logo">
+  </div>
+
+  <div class="container">
+    <h1>BIT SINDRI</h1>
+    <h2>CGPA Calculator</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Semester</th>
+          <th>SGPA</th>
+          <th>Credits</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <div>
+      <button onclick="calculateCGPA()">Calculate CGPA</button>
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="footer">
+    <div>© All rights reserved</div>
+    <div>Designed by Amit Dhar, Mechanical 2K22 Batch</div>
+  </div>
+
+  <script>
+    const tableBody = document.getElementById('table-body');
+    const credits = [17.5, 24, 21, 21, 22, 22, 20, 8];
+    for (let i = 0; i < 8; i++) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${i + 1}</td>
+        <td><input type="number" step="0.01" id="sgpa${i + 1}"></td>
+        <td><input type="number" id="credit${i + 1}" value="${credits[i]}" readonly></td>
+      `;
+      tableBody.appendChild(row);
+    }
+
+    function calculateCGPA() {
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      for (let i = 1; i <= 8; i++) {
+        const sgpa = parseFloat(document.getElementById(`sgpa${i}`).value) || 0;
+        const credit = parseFloat(document.getElementById(`credit${i}`).value) || 0;
+
+        if (sgpa > 0) {
+          totalPoints += sgpa * credit;
+          totalCredits += credit;
+        }
+      }
+
+      const cgpa = totalCredits === 0 ? 0 : (totalPoints / totalCredits);
+      document.getElementById('result').innerText =
+        `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
+    }
+  </script>
+</body>
+</html>
