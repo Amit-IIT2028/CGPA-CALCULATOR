@@ -58,7 +58,7 @@
       margin-bottom: 20px;
       font-weight: normal;
     }
-    select {
+    select, input[type="text"] {
       padding: 10px;
       font-size: 1em;
       margin: 10px;
@@ -90,6 +90,7 @@
       color: white;
       border: 1px solid #ccc;
       cursor: pointer;
+      margin: 10px;
     }
     .result {
       margin-top: 20px;
@@ -104,7 +105,7 @@
       display: flex;
       justify-content: space-between;
       color: #ccc;
-      font-size: 1em; /* Slightly increased */
+      font-size: 1em; /* Increased font size */
     }
   </style>
 </head>
@@ -121,7 +122,12 @@
     <h1>BIT SINDRI</h1>
     <h2>CGPA Calculator</h2>
 
-    <!-- Batch Selection -->
+    <!-- Registration and Batch -->
+    <div>
+      <label for="regNo">Enter Registration Number:</label>
+      <input type="text" id="regNo" placeholder="e.g. 2211024" onchange="loadUserData()">
+    </div>
+
     <div>
       <label for="batch">Select Batch:</label>
       <select id="batch" onchange="loadCredits()">
@@ -143,6 +149,8 @@
     </table>
 
     <button onclick="calculateCGPA()">Calculate CGPA</button>
+    <button onclick="clearUserData()">Clear My Saved SGPA</button>
+
     <div class="result" id="result"></div>
   </div>
 
@@ -154,6 +162,7 @@
   <script>
     const tableBody = document.getElementById('table-body');
     const batchSelect = document.getElementById('batch');
+    const regNoInput = document.getElementById('regNo');
 
     const creditsTill2022 = [17.5, 24, 21, 21, 22, 22, 20, 8];
 
@@ -175,11 +184,15 @@
         `;
         tableBody.appendChild(row);
       }
+
+      loadUserData(); // Re-load saved SGPA after batch changes
     }
 
     function calculateCGPA() {
       let totalPoints = 0;
       let totalCredits = 0;
+      const regNo = regNoInput.value.trim();
+      let sgpaData = {};
 
       for (let i = 1; i <= 8; i++) {
         const sgpa = parseFloat(document.getElementById(`sgpa${i}`).value) || 0;
@@ -189,13 +202,46 @@
           totalPoints += sgpa * credit;
           totalCredits += credit;
         }
+
+        sgpaData[`sgpa${i}`] = sgpa;
       }
 
       const cgpa = totalCredits === 0 ? 0 : totalPoints / totalCredits;
       document.getElementById("result").innerText = `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
+
+      if (regNo) {
+        localStorage.setItem(regNo, JSON.stringify(sgpaData));
+        console.log("SGPA data saved for", regNo);
+      }
     }
 
-    // Initialize
+    function loadUserData() {
+      const regNo = regNoInput.value.trim();
+      if (!regNo) return;
+
+      const savedData = JSON.parse(localStorage.getItem(regNo));
+      if (savedData) {
+        for (let i = 1; i <= 8; i++) {
+          document.getElementById(`sgpa${i}`).value = savedData[`sgpa${i}`] || "";
+        }
+        document.getElementById("result").innerText = "SGPA data loaded for registration number: " + regNo;
+      } else {
+        document.getElementById("result").innerText = "No saved data found for registration number: " + regNo;
+      }
+    }
+
+    function clearUserData() {
+      const regNo = regNoInput.value.trim();
+      if (regNo) {
+        localStorage.removeItem(regNo);
+        alert("Saved SGPA data cleared for " + regNo);
+        for (let i = 1; i <= 8; i++) {
+          document.getElementById(`sgpa${i}`).value = "";
+        }
+        document.getElementById("result").innerText = "";
+      }
+    }
+
     window.onload = loadCredits;
   </script>
 </body>
