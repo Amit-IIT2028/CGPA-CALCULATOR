@@ -9,13 +9,11 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     html, body {
       height: 100%;
       font-family: Arial, sans-serif;
       overflow-x: hidden;
     }
-
     .background {
       position: fixed;
       top: 0;
@@ -28,7 +26,6 @@
       filter: blur(14px);
       z-index: -2;
     }
-
     .overlay {
       position: fixed;
       top: 0;
@@ -38,7 +35,16 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: -1;
     }
-
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+    .logo img {
+      height: 100px;
+      background: transparent;
+    }
     .container {
       text-align: center;
       padding: 40px 20px;
@@ -46,32 +52,27 @@
       position: relative;
       min-height: 100vh;
     }
-
     h1 {
       font-size: 2.5em;
-      margin-bottom: 10px;
+      margin-top: 60px;
       letter-spacing: 1px;
     }
-
     h2 {
       font-size: 1.8em;
       margin-bottom: 30px;
       font-weight: normal;
     }
-
     table {
       margin: 0 auto;
       width: 70%;
       border-collapse: collapse;
       background-color: rgba(255, 255, 255, 0.1);
     }
-
     th, td {
       padding: 10px;
       border: 1px solid #ccc;
       color: white;
     }
-
     input[type="number"] {
       width: 80px;
       padding: 6px;
@@ -80,13 +81,11 @@
       color: white;
       text-align: center;
     }
-
     .result {
       margin-top: 20px;
       font-size: 1.3em;
       font-weight: bold;
     }
-
     button {
       margin-top: 20px;
       padding: 10px 25px;
@@ -96,7 +95,6 @@
       border: 1px solid #ccc;
       cursor: pointer;
     }
-
     .footer {
       position: fixed;
       bottom: 10px;
@@ -110,9 +108,13 @@
   </style>
 </head>
 <body>
-
   <div class="background"></div>
   <div class="overlay"></div>
+
+  <!-- Platinum Jubilee Logo -->
+  <div class="logo">
+    <img src="seventyfive.png" alt="75 Years BIT Sindri Logo">
+  </div>
 
   <div class="container">
     <h1>BIT SINDRI</h1>
@@ -126,9 +128,7 @@
           <th>Credits</th>
         </tr>
       </thead>
-      <tbody id="table-body">
-        <!-- JavaScript inserts rows here -->
-      </tbody>
+      <tbody id="table-body"></tbody>
     </table>
 
     <div>
@@ -146,7 +146,6 @@
   <script>
     const tableBody = document.getElementById('table-body');
     const credits = [17.5, 24, 21, 21, 22, 22, 20, 8];
-
     for (let i = 0; i < 8; i++) {
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -176,6 +175,5 @@
         `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
     }
   </script>
-
 </body>
 </html>
