@@ -4,139 +4,106 @@
   <meta charset="UTF-8">
   <title>CGPA Calculator - BIT SINDRI</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
-      height: 100%;
-      overflow-x: hidden;
-    }
-    .background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
       background-image: url('1000063709.avif');
       background-size: cover;
       background-position: center;
-      filter: blur(14px);
-      z-index: -2;
+      background-attachment: fixed;
+      backdrop-filter: blur(15px);
+      color: white;
     }
+
     .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: -1;
+      background-color: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding: 30px 20px;
     }
+
     .logo {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 10;
+      top: 15px;
+      left: 15px;
     }
+
     .logo img {
-      height: 100px;
-      background: transparent;
+      height: 90px;
     }
-    .container {
+
+    h1, h2 {
       text-align: center;
-      padding: 40px 20px;
-      color: white;
-      position: relative;
-      min-height: 100vh;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-top: 60px;
-    }
-    h2 {
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      font-weight: normal;
-    }
-    select, input[type="text"] {
+
+    select, input, button {
       padding: 10px;
+      margin: 8px;
       font-size: 1em;
-      margin: 10px;
     }
+
     table {
+      width: 90%;
       margin: 0 auto;
-      width: 70%;
       border-collapse: collapse;
-      background-color: rgba(255, 255, 255, 0.1);
     }
+
     th, td {
+      border: 1px solid #ddd;
       padding: 10px;
-      border: 1px solid #ccc;
-      color: white;
-    }
-    input[type="number"] {
-      width: 80px;
-      padding: 6px;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid #aaa;
-      color: white;
       text-align: center;
     }
-    button {
-      margin-top: 20px;
-      padding: 10px 25px;
-      font-size: 1em;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      margin: 10px;
+
+    input[type=number] {
+      width: 80px;
     }
-    .result {
-      margin-top: 20px;
-      font-size: 1.3em;
-      font-weight: bold;
-    }
+
     .footer {
+      text-align: left;
+      font-size: 1em;
+      color: #ccc;
       position: fixed;
       bottom: 10px;
       left: 20px;
       right: 20px;
       display: flex;
       justify-content: space-between;
-      color: #ccc;
-      font-size: 1em; /* Increased font size */
+    }
+
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.2em;
     }
   </style>
 </head>
 <body>
-  <div class="background"></div>
-  <div class="overlay"></div>
+  <div class="overlay">
+    <div class="logo">
+      <img src="seventyfive.png" alt="BIT Sindri Logo">
+    </div>
 
-  <!-- Logo -->
-  <div class="logo">
-    <img src="seventyfive.png" alt="75 Years BIT Sindri Logo">
-  </div>
-
-  <div class="container">
     <h1>BIT SINDRI</h1>
     <h2>CGPA Calculator</h2>
 
-    <!-- Registration and Batch -->
-    <div>
-      <label for="regNo">Enter Registration Number:</label>
-      <input type="text" id="regNo" placeholder="e.g. 2211024" onchange="loadUserData()">
-    </div>
+    <div style="text-align:center">
+      <label for="regNo">Registration No:</label>
+      <input type="text" id="regNo" onchange="loadUserData()">
 
-    <div>
-      <label for="batch">Select Batch:</label>
-      <select id="batch" onchange="loadCredits()">
-        <option value="2022">Till 2022</option>
-        <option value="2023">From 2023</option>
+      <br>
+
+      <label for="yearSelect">Select Year:</label>
+      <select id="yearSelect" onchange="selectYear(parseInt(this.value))">
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024 Onwards</option>
       </select>
+
+      <br>
+
+      <label for="branch">Branch:</label>
+      <select id="branch" onchange="loadCredits()"></select>
     </div>
 
-    <!-- SGPA Table -->
     <table>
       <thead>
         <tr>
@@ -148,8 +115,10 @@
       <tbody id="table-body"></tbody>
     </table>
 
-    <button onclick="calculateCGPA()">Calculate CGPA</button>
-    <button onclick="clearUserData()">Clear My Saved SGPA</button>
+    <div style="text-align:center; margin-top: 20px;">
+      <button onclick="calculateCGPA()">Calculate CGPA</button>
+      <button onclick="clearUserData()">Clear My SGPA</button>
+    </div>
 
     <div class="result" id="result"></div>
   </div>
@@ -160,89 +129,118 @@
   </div>
 
   <script>
+    const branchDropdown = document.getElementById('branch');
     const tableBody = document.getElementById('table-body');
-    const batchSelect = document.getElementById('batch');
-    const regNoInput = document.getElementById('regNo');
+    const yearSelect = document.getElementById('yearSelect');
+    let selectedYear = 2022;
 
-    const creditsTill2022 = [17.5, 24, 21, 21, 22, 22, 20, 8];
+    const yearBranches = {
+      2022: ["MECHANICAL", "ELECTRICAL", "ECE", "CSE", "IT", "METAL", "MINING", "PRODUCTION", "CHEMICAL", "CIVIL"],
+      2023: ["MECHANICAL", "ELECTRICAL", "ECE", "CSE", "IT", "METAL", "MINING", "PRODUCTION", "CHEMICAL", "CIVIL"],
+      2024: ["MECHANICAL", "ELECTRICAL", "ECE", "CSE", "IT", "METAL", "MINING", "PRODUCTION", "CHEMICAL", "CIVIL", "CYBERSECURITY"]
+    };
+
+    const credits2022 = [17.5, 24, 21, 21, 22, 22, 20, 8];
+
+    const credits2023 = {
+      "MECHANICAL":      [21, 23, 20, 21],
+      "ELECTRICAL":      [22, 22, 20, 21],
+      "ECE":             [22, 22, 20, 21],
+      "CSE":             [22, 22, 20, 21],
+      "IT":              [22, 22, 20, 21],
+      "METAL":           [21, 23, 20, 20],
+      "MINING":          [21, 23, 20, 20],
+      "PRODUCTION":      [21, 23, 20, 21],
+      "CHEMICAL":        [21, 23, 20, 22],
+      "CIVIL":           [21, 23, 21, 21]
+    };
+
+    function selectYear(year) {
+      selectedYear = year;
+      yearSelect.value = year;
+      updateBranches();
+      loadCredits();
+    }
+
+    function updateBranches() {
+      const branches = yearBranches[selectedYear];
+      branchDropdown.innerHTML = branches.map(branch => `<option value="${branch}">${branch}</option>`).join("");
+    }
 
     function loadCredits() {
-      const batch = batchSelect.value;
-      const is2022 = batch === "2022";
+      const branch = branchDropdown.value;
+      let credits = [];
 
-      tableBody.innerHTML = "";
-
-      for (let i = 0; i < 8; i++) {
-        const creditVal = is2022 ? creditsTill2022[i] : "";
-        const readOnly = is2022 ? "readonly" : "";
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${i + 1}</td>
-          <td><input type="number" step="0.01" id="sgpa${i + 1}"></td>
-          <td><input type="number" id="credit${i + 1}" value="${creditVal}" ${readOnly}></td>
-        `;
-        tableBody.appendChild(row);
+      if (selectedYear === 2022) {
+        credits = credits2022;
+      } else if (selectedYear === 2023) {
+        credits = (credits2023[branch] || []).concat(["", "", "", ""]);
+      } else {
+        credits = Array(8).fill("");
       }
 
-      loadUserData(); // Re-load saved SGPA after batch changes
+      tableBody.innerHTML = "";
+      for (let i = 0; i < 8; i++) {
+        const c = credits[i] || "";
+        const readOnly = selectedYear === 2022 || (selectedYear === 2023 && i < 4);
+        tableBody.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td><input type="number" id="sgpa${i}" step="0.01"></td>
+            <td><input type="number" id="credit${i}" value="${c}" ${readOnly ? "readonly" : ""}></td>
+          </tr>`;
+      }
+
+      loadUserData(); // Load SGPA if saved earlier
     }
 
     function calculateCGPA() {
-      let totalPoints = 0;
-      let totalCredits = 0;
-      const regNo = regNoInput.value.trim();
-      let sgpaData = {};
+      let totalCredit = 0;
+      let totalScore = 0;
+      const regNo = document.getElementById("regNo").value.trim();
+      let sgpaObj = {};
 
-      for (let i = 1; i <= 8; i++) {
+      for (let i = 0; i < 8; i++) {
         const sgpa = parseFloat(document.getElementById(`sgpa${i}`).value) || 0;
         const credit = parseFloat(document.getElementById(`credit${i}`).value) || 0;
-
-        if (sgpa > 0 && credit > 0) {
-          totalPoints += sgpa * credit;
-          totalCredits += credit;
+        if (sgpa && credit) {
+          totalScore += sgpa * credit;
+          totalCredit += credit;
         }
-
-        sgpaData[`sgpa${i}`] = sgpa;
+        sgpaObj[`sgpa${i}`] = sgpa;
       }
 
-      const cgpa = totalCredits === 0 ? 0 : totalPoints / totalCredits;
-      document.getElementById("result").innerText = `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
+      const cgpa = totalCredit ? totalScore / totalCredit : 0;
+      document.getElementById("result").innerText = `Total Credits: ${totalCredit}\nCGPA: ${cgpa.toFixed(6)}`;
 
-      if (regNo) {
-        localStorage.setItem(regNo, JSON.stringify(sgpaData));
-        console.log("SGPA data saved for", regNo);
-      }
+      if (regNo) localStorage.setItem(regNo, JSON.stringify(sgpaObj));
     }
 
     function loadUserData() {
-      const regNo = regNoInput.value.trim();
-      if (!regNo) return;
-
-      const savedData = JSON.parse(localStorage.getItem(regNo));
-      if (savedData) {
-        for (let i = 1; i <= 8; i++) {
+      const regNo = document.getElementById("regNo").value.trim();
+      if (regNo && localStorage.getItem(regNo)) {
+        const savedData = JSON.parse(localStorage.getItem(regNo));
+        for (let i = 0; i < 8; i++) {
           document.getElementById(`sgpa${i}`).value = savedData[`sgpa${i}`] || "";
         }
-        document.getElementById("result").innerText = "SGPA data loaded for registration number: " + regNo;
-      } else {
-        document.getElementById("result").innerText = "No saved data found for registration number: " + regNo;
       }
     }
 
     function clearUserData() {
-      const regNo = regNoInput.value.trim();
+      const regNo = document.getElementById("regNo").value.trim();
       if (regNo) {
         localStorage.removeItem(regNo);
-        alert("Saved SGPA data cleared for " + regNo);
-        for (let i = 1; i <= 8; i++) {
+        for (let i = 0; i < 8; i++) {
           document.getElementById(`sgpa${i}`).value = "";
         }
         document.getElementById("result").innerText = "";
       }
     }
 
-    window.onload = loadCredits;
+    window.onload = () => {
+      selectYear(2022);
+      yearSelect.value = "2022";
+    };
   </script>
 </body>
 </html>
