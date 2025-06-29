@@ -4,14 +4,11 @@
   <meta charset="UTF-8">
   <title>CGPA Calculator - BIT SINDRI</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
       font-family: Arial, sans-serif;
+      height: 100%;
       overflow-x: hidden;
     }
     .background {
@@ -55,12 +52,16 @@
     h1 {
       font-size: 2.5em;
       margin-top: 60px;
-      letter-spacing: 1px;
     }
     h2 {
       font-size: 1.8em;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-weight: normal;
+    }
+    select {
+      padding: 10px;
+      font-size: 1em;
+      margin: 10px;
     }
     table {
       margin: 0 auto;
@@ -81,11 +82,6 @@
       color: white;
       text-align: center;
     }
-    .result {
-      margin-top: 20px;
-      font-size: 1.3em;
-      font-weight: bold;
-    }
     button {
       margin-top: 20px;
       padding: 10px 25px;
@@ -95,6 +91,11 @@
       border: 1px solid #ccc;
       cursor: pointer;
     }
+    .result {
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
     .footer {
       position: fixed;
       bottom: 10px;
@@ -103,7 +104,7 @@
       display: flex;
       justify-content: space-between;
       color: #ccc;
-      font-size: 0.9em;
+      font-size: 1em; /* Slightly increased */
     }
   </style>
 </head>
@@ -111,7 +112,7 @@
   <div class="background"></div>
   <div class="overlay"></div>
 
-  <!-- Platinum Jubilee Logo -->
+  <!-- Logo -->
   <div class="logo">
     <img src="seventyfive.png" alt="75 Years BIT Sindri Logo">
   </div>
@@ -120,6 +121,16 @@
     <h1>BIT SINDRI</h1>
     <h2>CGPA Calculator</h2>
 
+    <!-- Batch Selection -->
+    <div>
+      <label for="batch">Select Batch:</label>
+      <select id="batch" onchange="loadCredits()">
+        <option value="2022">Till 2022</option>
+        <option value="2023">From 2023</option>
+      </select>
+    </div>
+
+    <!-- SGPA Table -->
     <table>
       <thead>
         <tr>
@@ -131,10 +142,7 @@
       <tbody id="table-body"></tbody>
     </table>
 
-    <div>
-      <button onclick="calculateCGPA()">Calculate CGPA</button>
-    </div>
-
+    <button onclick="calculateCGPA()">Calculate CGPA</button>
     <div class="result" id="result"></div>
   </div>
 
@@ -145,15 +153,28 @@
 
   <script>
     const tableBody = document.getElementById('table-body');
-    const credits = [17.5, 24, 21, 21, 24, 22, 20, 8];
-    for (let i = 0; i < 8; i++) {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${i + 1}</td>
-        <td><input type="number" step="0.01" id="sgpa${i + 1}"></td>
-        <td><input type="number" id="credit${i + 1}" value="${credits[i]}" readonly></td>
-      `;
-      tableBody.appendChild(row);
+    const batchSelect = document.getElementById('batch');
+
+    const creditsTill2022 = [17.5, 24, 21, 21, 22, 22, 20, 8];
+
+    function loadCredits() {
+      const batch = batchSelect.value;
+      const is2022 = batch === "2022";
+
+      tableBody.innerHTML = "";
+
+      for (let i = 0; i < 8; i++) {
+        const creditVal = is2022 ? creditsTill2022[i] : "";
+        const readOnly = is2022 ? "readonly" : "";
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${i + 1}</td>
+          <td><input type="number" step="0.01" id="sgpa${i + 1}"></td>
+          <td><input type="number" id="credit${i + 1}" value="${creditVal}" ${readOnly}></td>
+        `;
+        tableBody.appendChild(row);
+      }
     }
 
     function calculateCGPA() {
@@ -164,16 +185,18 @@
         const sgpa = parseFloat(document.getElementById(`sgpa${i}`).value) || 0;
         const credit = parseFloat(document.getElementById(`credit${i}`).value) || 0;
 
-        if (sgpa > 0) {
+        if (sgpa > 0 && credit > 0) {
           totalPoints += sgpa * credit;
           totalCredits += credit;
         }
       }
 
-      const cgpa = totalCredits === 0 ? 0 : (totalPoints / totalCredits);
-      document.getElementById('result').innerText =
-        `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
+      const cgpa = totalCredits === 0 ? 0 : totalPoints / totalCredits;
+      document.getElementById("result").innerText = `Total Credits Counted: ${totalCredits.toFixed(1)}\nCGPA: ${cgpa.toFixed(6)}`;
     }
+
+    // Initialize
+    window.onload = loadCredits;
   </script>
 </body>
 </html>
