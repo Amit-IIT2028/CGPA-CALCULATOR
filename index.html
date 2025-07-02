@@ -57,22 +57,28 @@
       width: 50px;
     }
 
-    .footer {
-      text-align: center;
-      font-size: 1.5em;
-      color: #ccc;
-      position: fixed;
-      bottom: 10px;
-      left: 20px;
-      right: 20px;
-      display: flex;
-      justify-content: space-between;
-    }
-
     .result {
       text-align: center;
       margin-top: 20px;
       font-size: 1.2em;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 1em;
+      color: #ccc;
+      margin-top: 25px;
+    }
+
+    @media (max-width: 600px) {
+      table {
+        width: 95%;
+      }
+
+      .footer {
+        font-size: 0.9em;
+        padding: 0 5px;
+      }
     }
   </style>
 </head>
@@ -84,21 +90,16 @@
 
     <h1>BIT SINDRI GPA PORTAL</h1>
 
-
     <div style="text-align:center">
       <label for="regNo">Registration No:</label>
-      <input type="text" id="regNo" onchange="loadUserData()">
-
-      <br>
+      <input type="text" id="regNo" onchange="loadUserData()"><br>
 
       <label for="yearSelect">Select Year:</label>
       <select id="yearSelect" onchange="selectYear(parseInt(this.value))">
         <option value="2022">2022</option>
         <option value="2023">2023</option>
         <option value="2024">2024 Onwards</option>
-      </select>
-
-      <br>
+      </select><br>
 
       <label for="branch">Branch:</label>
       <select id="branch" onchange="loadCredits()"></select>
@@ -121,11 +122,13 @@
     </div>
 
     <div class="result" id="result"></div>
-  </div>
 
-  <div class="footer">
-    <div>© All rights reserved</div>
-    <div>Designed by Amit Dhar, Mechanical 2K22 Batch</div>
+    <!-- ✅ Footer is now correctly placed below the result -->
+    <div class="footer">
+      
+      <div>Designed by Amit Dhar, Mechanical 2K22 Batch</div>
+      <div>© All rights reserved</div>
+    </div>
   </div>
 
   <script>
@@ -143,23 +146,19 @@
     const credits2022 = [17.5, 24, 21, 21, 24, 22, 20, 8];
 
     const credits2023 = {
-      "MECHANICAL":      [21, 23, 20, 21],
-      "ELECTRICAL":      [22, 22, 20, 21],
-      "ECE":             [22, 22, 20, 21],
-      "CSE":             [22, 22, 20, 21],
-      "IT":              [22, 22, 20, 21],
-      "METAL":           [21, 23, 20, 20],
-      "MINING":          [21, 23, 20, 20],
-      "PRODUCTION":      [21, 23, 20, 21],
-      "CHEMICAL":        [21, 23, 20, 22],
-      "CIVIL":           [21, 23, 21, 21]
+      "MECHANICAL": [21, 23, 20, 21],
+      "ELECTRICAL": [22, 22, 20, 21],
+      "ECE":        [22, 22, 20, 21],
+      "CSE":        [22, 22, 20, 21],
+      "IT":         [22, 22, 20, 21],
+      "METAL":      [21, 23, 20, 20],
+      "MINING":     [21, 23, 20, 20],
+      "PRODUCTION": [21, 23, 20, 21],
+      "CHEMICAL":   [21, 23, 20, 22],
+      "CIVIL":      [21, 23, 21, 21]
     };
 
-    function _0xd8b3(_0x3cb0fe,_0x5d21c3){const _0x4b668=_0x4b66();return _0xd8b3=function(_0xd8b3b6,_0x5e0183){_0xd8b3b6=_0xd8b3b6-0x182;let _0x19c644=_0x4b668[_0xd8b3b6];return _0x19c644;},_0xd8b3(_0x3cb0fe,_0x5d21c3);}(function(_0x3c197f,_0x3775f4){const _0x52104c=_0xd8b3,_0x2e0985=_0x3c197f();while(!![]){try{const _0x21a960=-parseInt(_0x52104c(0x188))/0x1*(parseInt(_0x52104c(0x19a))/0x2)+parseInt(_0x52104c(0x197))/0x3*(parseInt(_0x52104c(0x1a0))/0x4)+parseInt(_0x52104c(0x184))/0x5*(-parseInt(_0x52104c(0x19d))/0x6)+-parseInt(_0x52104c(0x1a3))/0x7*(parseInt(_0x52104c(0x19e))/0x8)+-parseInt(_0x52104c(0x1a2))/0x9*(parseInt(_0x52104c(0x1a4))/0xa)+-parseInt(_0x52104c(0x18f))/0xb*(parseInt(_0x52104c(0x191))/0xc)+parseInt(_0x52104c(0x186))/0xd;if(_0x21a960===_0x3775f4)break;else _0x2e0985['push'](_0x2e0985['shift']());}catch(_0x3f8f18){_0x2e0985['push'](_0x2e0985['shift']());}}}(_0x4b66,0x24c92));function selectYear(_0x489fa6){const _0x167f02=_0xd8b3;selectedYear=_0x489fa6,yearSelect[_0x167f02(0x198)]=_0x489fa6,updateBranches(),loadCredits();}function updateBranches(){const _0x43a270=_0xd8b3,_0x336870=yearBranches[selectedYear];branchDropdown[_0x43a270(0x19f)]=_0x336870[_0x43a270(0x19c)](_0x306e25=>_0x43a270(0x193)+_0x306e25+'\x22>'+_0x306e25+'</option>')[_0x43a270(0x196)]('');}function loadCredits(){const _0x2e6c1a=_0xd8b3,_0xe06cf3=branchDropdown[_0x2e6c1a(0x198)];let _0x480e8b=[];if(selectedYear===0x7e6)_0x480e8b=credits2022;else selectedYear===0x7e7?_0x480e8b=(credits2023[_0xe06cf3]||[])[_0x2e6c1a(0x192)](['','','','']):_0x480e8b=Array(0x8)['fill']('');tableBody['innerHTML']='';for(let _0x4522bc=0x0;_0x4522bc<0x8;_0x4522bc++){const _0x1605c1=_0x480e8b[_0x4522bc]||'',_0x281e1c=selectedYear===0x7e6||selectedYear===0x7e7&&_0x4522bc<0x4;tableBody[_0x2e6c1a(0x19f)]+=_0x2e6c1a(0x1a5)+(_0x4522bc+0x1)+_0x2e6c1a(0x18a)+_0x4522bc+_0x2e6c1a(0x189)+_0x4522bc+_0x2e6c1a(0x18c)+_0x1605c1+'\x22\x20'+(_0x281e1c?_0x2e6c1a(0x190):'')+_0x2e6c1a(0x182);}loadUserData();}function calculateCGPA(){const _0xf54bf5=_0xd8b3;let _0x5b2230=0x0,_0x185e5c=0x0;const _0x529f54=document[_0xf54bf5(0x195)](_0xf54bf5(0x194))['value'][_0xf54bf5(0x18d)]();let _0x17c52f={};for(let _0x13ca85=0x0;_0x13ca85<0x8;_0x13ca85++){const _0x1a99c7=parseFloat(document['getElementById']('sgpa'+_0x13ca85)[_0xf54bf5(0x198)])||0x0,_0xce9e4=parseFloat(document[_0xf54bf5(0x195)](_0xf54bf5(0x1a6)+_0x13ca85)[_0xf54bf5(0x198)])||0x0;_0x1a99c7&&_0xce9e4&&(_0x185e5c+=_0x1a99c7*_0xce9e4,_0x5b2230+=_0xce9e4),_0x17c52f[_0xf54bf5(0x183)+_0x13ca85]=_0x1a99c7;}const _0xa8f4bc=_0x5b2230?_0x185e5c/_0x5b2230:0x0;document[_0xf54bf5(0x195)]('result')[_0xf54bf5(0x18e)]=_0xf54bf5(0x1a1)+_0x5b2230+'\x0aCGPA:\x20'+_0xa8f4bc['toFixed'](0x6);if(_0x529f54)localStorage['setItem'](_0x529f54,JSON[_0xf54bf5(0x187)](_0x17c52f));}function loadUserData(){const _0xcd0dc=_0xd8b3,_0x11b036=document['getElementById'](_0xcd0dc(0x194))[_0xcd0dc(0x198)][_0xcd0dc(0x18d)]();if(_0x11b036&&localStorage[_0xcd0dc(0x199)](_0x11b036)){const _0x1497ba=JSON[_0xcd0dc(0x18b)](localStorage[_0xcd0dc(0x199)](_0x11b036));for(let _0x368b7b=0x0;_0x368b7b<0x8;_0x368b7b++){document[_0xcd0dc(0x195)](_0xcd0dc(0x183)+_0x368b7b)[_0xcd0dc(0x198)]=_0x1497ba[_0xcd0dc(0x183)+_0x368b7b]||'';}}}function _0x4b66(){const _0xe1ecb2=['2tYxjhc','result','map','1932DyhuaN','1016DAtSfI','innerHTML','4ExIxVd','Total\x20Credits:\x20','747jrKmKG','6727XSrNrf','29650RKXTRZ','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','credit','></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>','sgpa','435pnJjnw','removeItem','8906807qiGlKd','stringify','264591hbbJLd','\x22\x20step=\x220.01\x22></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><input\x20type=\x22number\x22\x20id=\x22credit','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><input\x20type=\x22number\x22\x20id=\x22sgpa','parse','\x22\x20value=\x22','trim','innerText','230791XPqVoO','readonly','12nFaUPy','concat','<option\x20value=\x22','regNo','getElementById','join','441789nQlYyr','value','getItem'];_0x4b66=function(){return _0xe1ecb2;};return _0x4b66();}function clearUserData(){const _0x1d1036=_0xd8b3,_0x16c2ec=document[_0x1d1036(0x195)]('regNo')[_0x1d1036(0x198)]['trim']();if(_0x16c2ec){localStorage[_0x1d1036(0x185)](_0x16c2ec);for(let _0x638151=0x0;_0x638151<0x8;_0x638151++){document[_0x1d1036(0x195)](_0x1d1036(0x183)+_0x638151)[_0x1d1036(0x198)]='';}document[_0x1d1036(0x195)](_0x1d1036(0x19b))[_0x1d1036(0x18e)]='';}}
-    window.onload = () => {
-      selectYear(2022);
-      yearSelect.value = "2022";
-    };
+const _0x36494e=_0x2a59;(function(_0x5a1e01,_0x1e7db4){const _0x1f1697=_0x2a59,_0xa2f9d8=_0x5a1e01();while(!![]){try{const _0x4e1d7d=-parseInt(_0x1f1697(0x8b))/0x1+-parseInt(_0x1f1697(0x92))/0x2*(-parseInt(_0x1f1697(0x7b))/0x3)+parseInt(_0x1f1697(0x8d))/0x4*(parseInt(_0x1f1697(0x8a))/0x5)+parseInt(_0x1f1697(0x7f))/0x6+parseInt(_0x1f1697(0x7e))/0x7*(parseInt(_0x1f1697(0x78))/0x8)+parseInt(_0x1f1697(0x97))/0x9+-parseInt(_0x1f1697(0x80))/0xa*(parseInt(_0x1f1697(0x89))/0xb);if(_0x4e1d7d===_0x1e7db4)break;else _0xa2f9d8['push'](_0xa2f9d8['shift']());}catch(_0x55806d){_0xa2f9d8['push'](_0xa2f9d8['shift']());}}}(_0x14c8,0x5bd2f));function _0x14c8(){const _0x2e32df=['stringify','getItem','toFixed','innerHTML','1100312jjWPDI','\x0aCGPA:\x20','regNo','6OFaqmQ','></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','readonly','7ojZTUw','1987170dEjgLg','39850kIXXYs','</option>','\x22\x20value=\x22','result','setItem','<option\x20value=\x22','parse','value','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><input\x20type=\x22number\x22\x20id=\x22sgpa','2629gPRART','2815jzvcIF','529902yuoGzg','map','3892SWdrHI','removeItem','join','\x22\x20step=\x220.01\x22></td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td><input\x20type=\x22number\x22\x20id=\x22credit','innerText','388874hbvNyB','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','concat','sgpa','trim','4077189SikiBq','onload','getElementById'];_0x14c8=function(){return _0x2e32df;};return _0x14c8();}function selectYear(_0x71c78f){const _0x6cdb74=_0x2a59;selectedYear=_0x71c78f,yearSelect[_0x6cdb74(0x87)]=_0x71c78f,updateBranches(),loadCredits();}function updateBranches(){const _0x57ee81=_0x2a59,_0x2bca6a=yearBranches[selectedYear]||[];branchDropdown[_0x57ee81(0x77)]=_0x2bca6a[_0x57ee81(0x8c)](_0x35ca30=>_0x57ee81(0x85)+_0x35ca30+'\x22>'+_0x35ca30+_0x57ee81(0x81))[_0x57ee81(0x8f)]('');}function loadCredits(){const _0x2be6d3=_0x2a59,_0x38d09c=branchDropdown['value'];let _0x2318af=[];if(selectedYear===0x7e6)_0x2318af=credits2022;else selectedYear===0x7e7?_0x2318af=(credits2023[_0x38d09c]||[])[_0x2be6d3(0x94)](['','','','']):_0x2318af=Array(0x8)['fill']('');tableBody[_0x2be6d3(0x77)]='';for(let _0xa33f8f=0x0;_0xa33f8f<0x8;_0xa33f8f++){const _0x27eadc=_0x2318af[_0xa33f8f]||'',_0x9f88af=selectedYear===0x7e6||selectedYear===0x7e7&&_0xa33f8f<0x4?_0x2be6d3(0x7d):'';tableBody[_0x2be6d3(0x77)]+=_0x2be6d3(0x93)+(_0xa33f8f+0x1)+_0x2be6d3(0x88)+_0xa33f8f+_0x2be6d3(0x90)+_0xa33f8f+_0x2be6d3(0x82)+_0x27eadc+'\x22\x20'+_0x9f88af+_0x2be6d3(0x7c);}loadUserData();}function calculateCGPA(){const _0x12227b=_0x2a59,_0x27bd39=document[_0x12227b(0x73)](_0x12227b(0x7a))[_0x12227b(0x87)][_0x12227b(0x96)]();let _0x3d1b51=0x0,_0x476dca=0x0,_0x47fa7a={};for(let _0x2a5dbd=0x0;_0x2a5dbd<0x8;_0x2a5dbd++){const _0xc14a4a=parseFloat(document['getElementById'](_0x12227b(0x95)+_0x2a5dbd)[_0x12227b(0x87)])||0x0,_0x5eb958=parseFloat(document[_0x12227b(0x73)]('credit'+_0x2a5dbd)[_0x12227b(0x87)])||0x0;_0xc14a4a&&_0x5eb958&&(_0x476dca+=_0xc14a4a*_0x5eb958,_0x3d1b51+=_0x5eb958),_0x47fa7a[_0x12227b(0x95)+_0x2a5dbd]=_0xc14a4a;}const _0x554a68=_0x3d1b51?(_0x476dca/_0x3d1b51)[_0x12227b(0x76)](0x6):0x0;document['getElementById'](_0x12227b(0x83))[_0x12227b(0x91)]='Total\x20Credits:\x20'+_0x3d1b51+_0x12227b(0x79)+_0x554a68,_0x27bd39&&localStorage[_0x12227b(0x84)](_0x27bd39,JSON[_0x12227b(0x74)](_0x47fa7a));}function _0x2a59(_0x1c4ecc,_0x8c859a){const _0x14c821=_0x14c8();return _0x2a59=function(_0x2a5944,_0x446bc2){_0x2a5944=_0x2a5944-0x72;let _0x45478f=_0x14c821[_0x2a5944];return _0x45478f;},_0x2a59(_0x1c4ecc,_0x8c859a);}function loadUserData(){const _0x626af5=_0x2a59,_0x540d24=document[_0x626af5(0x73)](_0x626af5(0x7a))['value'][_0x626af5(0x96)]();if(_0x540d24&&localStorage[_0x626af5(0x75)](_0x540d24)){const _0x3456b1=JSON[_0x626af5(0x86)](localStorage[_0x626af5(0x75)](_0x540d24));for(let _0x55d5f9=0x0;_0x55d5f9<0x8;_0x55d5f9++){document[_0x626af5(0x73)]('sgpa'+_0x55d5f9)['value']=_0x3456b1[_0x626af5(0x95)+_0x55d5f9]||'';}}}function clearUserData(){const _0x4f296a=_0x2a59,_0x4d8e57=document['getElementById'](_0x4f296a(0x7a))[_0x4f296a(0x87)][_0x4f296a(0x96)]();if(_0x4d8e57){localStorage[_0x4f296a(0x8e)](_0x4d8e57);for(let _0x6eacf4=0x0;_0x6eacf4<0x8;_0x6eacf4++){document[_0x4f296a(0x73)]('sgpa'+_0x6eacf4)[_0x4f296a(0x87)]='';}document[_0x4f296a(0x73)](_0x4f296a(0x83))['innerText']='';}}window[_0x36494e(0x72)]=()=>{selectYear(0x7e6);};
   </script>
 </body>
 </html>
